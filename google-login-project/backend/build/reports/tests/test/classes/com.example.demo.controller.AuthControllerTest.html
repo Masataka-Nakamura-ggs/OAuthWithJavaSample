@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - AuthControllerTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>AuthControllerTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.example.demo.controller.html">com.example.demo.controller</a> &gt; AuthControllerTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">5</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.315s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testHandleCallbackInvalidState()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testHandleCallbackNoSession()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testHandleCallbackNullState()</td>
+<td class="success">0.121s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testHandleCallbackServiceException()</td>
+<td class="success">0.019s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testHandleCallbackSuccess()</td>
+<td class="success">0.165s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2025-08-13 12:07:51.051  INFO 88258 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.example.demo.controller.AuthControllerTest], using SpringBootContextLoader
+2025-08-13 12:07:51.052  INFO 88258 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.example.demo.controller.AuthControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2025-08-13 12:07:51.052  INFO 88258 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.demo.controller.AuthControllerTest]: AuthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-08-13 12:07:51.078  INFO 88258 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.demo.DemoApplication for test class com.example.demo.controller.AuthControllerTest
+2025-08-13 12:07:51.080  INFO 88258 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2025-08-13 12:07:51.081  INFO 88258 --- [    Test worker] .b.t.a.w.s.WebMvcTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@1e7b3812, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@7d82607c, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@2e5bf9a2, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@4ef708fd, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@90b0299, org.springframework.test.context.support.DirtiesContextTestExecutionListener@67e41244, org.springframework.test.context.transaction.TransactionalTestExecutionListener@168371f3, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@6045233e, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@318bfa65, org.springframework.test.context.event.EventPublishingTestExecutionListener@763aa822, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@7b3b43ff, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@322ec375, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@5c984f87, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@7f40978e, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@5ec50722, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@1ab442e4, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@44ec242]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.15)
+
+2025-08-13 12:07:51.100  INFO 88258 --- [    Test worker] c.e.demo.controller.AuthControllerTest   : Starting AuthControllerTest using Java 1.8.0_442 on m-nakamura-ggs-local.local with PID 88258 (started by m-nakamura-ggs-local in /Users/m-nakamura-ggs-local/github/m-nakamura.ggs/OAuthWithJavaSample/google-login-project/backend)
+2025-08-13 12:07:51.100  INFO 88258 --- [    Test worker] c.e.demo.controller.AuthControllerTest   : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2025-08-13 12:07:51.447  WARN 88258 --- [    Test worker] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 20205014-4041-43fb-b2ba-87119c5b764a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-08-13 12:07:51.510  INFO 88258 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@31ce44d0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@18b43161, org.springframework.security.web.context.SecurityContextPersistenceFilter@50dd7208, org.springframework.security.web.header.HeaderWriterFilter@44d5b826, org.springframework.security.web.csrf.CsrfFilter@fd9e5dc, org.springframework.security.web.authentication.logout.LogoutFilter@3c5c903f, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@12025bdd, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@75374874, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@3080e6df, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@565fc860, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@a2dd2ea, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@63505f01, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@447198ee, org.springframework.security.web.session.SessionManagementFilter@4e25265, org.springframework.security.web.access.ExceptionTranslationFilter@306d58e9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4936c5b1]
+2025-08-13 12:07:51.550  INFO 88258 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-08-13 12:07:51.550  INFO 88258 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-08-13 12:07:51.551  INFO 88258 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-08-13 12:07:51.560  INFO 88258 --- [    Test worker] c.e.demo.controller.AuthControllerTest   : Started AuthControllerTest in 0.477 seconds (JVM running for 5.449)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.6.4</a> at 2025/08/13 12:07:53</p>
+</div>
+</div>
+</body>
+</html>

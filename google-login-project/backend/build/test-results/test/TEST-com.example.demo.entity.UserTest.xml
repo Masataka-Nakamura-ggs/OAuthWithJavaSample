@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.demo.entity.UserTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-08-13T03:07:51" hostname="m-nakamura-ggs-local.local" time="0.001">
+  <properties/>
+  <testcase name="testUserEqualsAndHashCode()" classname="com.example.demo.entity.UserTest" time="0.0"/>
+  <testcase name="testUserCreation()" classname="com.example.demo.entity.UserTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

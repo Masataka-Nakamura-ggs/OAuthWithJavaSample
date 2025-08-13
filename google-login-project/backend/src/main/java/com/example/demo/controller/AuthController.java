@@ -1,9 +1,29 @@
+package com.example.demo.controller;
+
+import com.example.demo.dto.CallbackRequestDto;
+import com.example.demo.entity.User;
+import com.example.demo.service.GoogleAuthService;
+import com.example.demo.service.JwtService;
+import com.example.demo.service.UserService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/api/auth/google")
 @RequiredArgsConstructor
 public class AuthController {
     
-    // ... GoogleAuthService, UserServiceなどをDI ...
+    private final GoogleAuthService googleAuthService;
+    private final UserService userService;
+    private final JwtService jwtService;
 
     @PostMapping("/callback")
     public ResponseEntity<?> handleCallback(@RequestBody CallbackRequestDto callbackRequest, HttpServletRequest request) {
@@ -26,12 +46,12 @@ public class AuthController {
             GoogleIdToken.Payload payload = googleAuthService.verifyIdToken(tokenResponse.getIdToken(), savedNonce);
 
             // ユーザーを処理
-            User user = userService.processGoogleUser(payload, ...);
+            User user = userService.processGoogleUser(payload);
             
             // アプリケーション独自のセッションJWTを生成
             String jwt = jwtService.generateToken(user);
             
-            return ResponseEntity.ok(Map.of("sessionToken", jwt));
+            return ResponseEntity.ok(Collections.singletonMap("sessionToken", jwt));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Authentication failed.");

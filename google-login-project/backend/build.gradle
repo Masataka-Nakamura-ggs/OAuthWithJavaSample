@@ -2,11 +2,15 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.15' // ご自身のSpring Bootバージョンに合わせてください
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'jacoco'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17' // ご自身のJavaバージョンに合わせてください
+java {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
 
 configurations {
     compileOnly {
@@ -25,8 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // Oracle Database Driver
-    runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+    // H2 Database for testing (replace with Oracle for production)
+    runtimeOnly 'com.h2database:h2'
 
     // Google API Client
     implementation 'com.google.api-client:google-api-client:2.2.0'
@@ -39,8 +43,26 @@ dependencies {
     // Lombok for reducing boilerplate code
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    
+    // Test dependencies
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.enabled true
+        html.destination file("${buildDir}/jacocoHtml")
+    }
 }

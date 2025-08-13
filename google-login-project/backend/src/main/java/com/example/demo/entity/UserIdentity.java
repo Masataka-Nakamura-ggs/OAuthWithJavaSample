@@ -1,3 +1,11 @@
+package com.example.demo.entity;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.Instant;
+
 // UserIdentity.java
 @Entity @Table(name = "USER_IDENTITIES")
 @Data @NoArgsConstructor

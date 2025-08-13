@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GoogleAuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.service</a> &gt; <span class="el_source">GoogleAuthService.java</span></div><h1>GoogleAuthService.java</h1><pre class="source lang-java linenums">package com.example.demo.service;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.http.UrlEncodedContent;
+import com.google.api.client.json.gson.GsonFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+<span class="fc" id="L24">@RequiredArgsConstructor</span>
+public class GoogleAuthService {
+
+    @Value(&quot;${google.auth.client-id}&quot;)
+    private String clientId;
+    @Value(&quot;${google.auth.client-secret}&quot;)
+    private String clientSecret;
+    @Value(&quot;${google.auth.redirect-uri}&quot;)
+    private String redirectUri;
+
+    private static final String GOOGLE_TOKEN_SERVER_URL = &quot;https://oauth2.googleapis.com/token&quot;;
+    private static final String ISSUER = &quot;https://accounts.google.com&quot;;
+
+    // トークン交換処理
+    public GoogleTokenResponse exchangeCodeForTokens(String code, String codeVerifier) throws IOException {
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        if (code == null || code.trim().isEmpty()) {</span>
+<span class="fc" id="L40">            throw new IllegalArgumentException(&quot;Authorization code cannot be null or empty&quot;);</span>
+        }
+<span class="pc bpc" id="L42" title="1 of 4 branches missed.">        if (codeVerifier == null || codeVerifier.trim().isEmpty()) {</span>
+<span class="fc" id="L43">            throw new IllegalArgumentException(&quot;Code verifier cannot be null or empty&quot;);</span>
+        }
+        
+<span class="fc" id="L46">        NetHttpTransport transport = new NetHttpTransport();</span>
+<span class="fc" id="L47">        HttpRequestFactory requestFactory = transport.createRequestFactory();</span>
+        
+<span class="fc" id="L49">        Map&lt;String, String&gt; params = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L50">        params.put(&quot;client_id&quot;, clientId);</span>
+<span class="fc" id="L51">        params.put(&quot;client_secret&quot;, clientSecret);</span>
+<span class="fc" id="L52">        params.put(&quot;code&quot;, code);</span>
+<span class="fc" id="L53">        params.put(&quot;redirect_uri&quot;, redirectUri);</span>
+<span class="fc" id="L54">        params.put(&quot;grant_type&quot;, &quot;authorization_code&quot;);</span>
+<span class="fc" id="L55">        params.put(&quot;code_verifier&quot;, codeVerifier);</span>
+        
+<span class="fc" id="L57">        UrlEncodedContent content = new UrlEncodedContent(params);</span>
+<span class="fc" id="L58">        HttpRequest request = requestFactory.buildPostRequest(new GenericUrl(GOOGLE_TOKEN_SERVER_URL), content);</span>
+        
+<span class="nc" id="L60">        HttpResponse response = request.execute();</span>
+<span class="nc" id="L61">        return response.parseAs(GoogleTokenResponse.class);</span>
+    }
+
+    // IDトークン検証
+    public GoogleIdToken.Payload verifyIdToken(String idTokenString, String expectedNonce) throws GeneralSecurityException, IOException {
+<span class="fc bfc" id="L66" title="All 4 branches covered.">        if (idTokenString == null || idTokenString.trim().isEmpty()) {</span>
+<span class="fc" id="L67">            throw new IllegalArgumentException(&quot;ID token cannot be null or empty&quot;);</span>
+        }
+<span class="pc bpc" id="L69" title="3 of 4 branches missed.">        if (expectedNonce == null || expectedNonce.trim().isEmpty()) {</span>
+<span class="fc" id="L70">            throw new IllegalArgumentException(&quot;Expected nonce cannot be null or empty&quot;);</span>
+        }
+        
+        // Googleのライブラリを使って署名、iss, aud, exp, nonceを検証 [cite: 191]
+<span class="nc" id="L74">        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())</span>
+<span class="nc" id="L75">            .setAudience(Collections.singletonList(clientId))</span>
+<span class="nc" id="L76">            .setIssuer(ISSUER)</span>
+<span class="nc" id="L77">            .build();</span>
+
+<span class="nc" id="L79">        GoogleIdToken idToken = verifier.verify(idTokenString);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (idToken == null) {</span>
+<span class="nc" id="L81">            throw new GeneralSecurityException(&quot;ID Token is invalid.&quot;);</span>
+        }
+        
+        // nonceを検証してリプレイ攻撃を防ぐ [cite: 186]
+<span class="nc" id="L85">        String nonce = (String) idToken.getPayload().get(&quot;nonce&quot;);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (!expectedNonce.equals(nonce)) {</span>
+<span class="nc" id="L87">            throw new GeneralSecurityException(&quot;Invalid nonce.&quot;);</span>
+        }
+
+<span class="nc" id="L90">        return idToken.getPayload();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

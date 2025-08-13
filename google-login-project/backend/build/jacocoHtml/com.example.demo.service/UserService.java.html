@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.example.demo.service;
+
+import com.example.demo.entity.User;
+import com.example.demo.entity.UserIdentity;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.UserIdentityRepository;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+<span class="fc" id="L17">@RequiredArgsConstructor</span>
+@Transactional
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final UserIdentityRepository userIdentityRepository;
+    // TODO: トークンを暗号化/復号化するためのEncryptorをDIする
+
+    public User processGoogleUser(GoogleIdToken.Payload payload) {
+<span class="fc" id="L26">        String providerUserId = payload.getSubject(); // 'sub'クレームを永続的なキーとして使用 [cite: 189]</span>
+
+<span class="fc" id="L28">        Optional&lt;UserIdentity&gt; identityOpt = userIdentityRepository.findByProviderNameAndProviderUserId(&quot;google&quot;, providerUserId);</span>
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (identityOpt.isPresent()) {</span>
+            // 既存ユーザー
+<span class="fc" id="L32">            UserIdentity identity = identityOpt.get();</span>
+            // TODO: トークン情報を更新
+            // identity.setEncryptedAccessToken(encryptedAccessToken);
+            // identity.setEncryptedRefreshToken(encryptedRefreshToken);
+            // identity.setAccessTokenExpiresAt(expiresAt);
+            // userIdentityRepository.save(identity);
+<span class="fc" id="L38">            return identity.getUser();</span>
+        } else {
+            // 新規ユーザー [cite: 160]
+<span class="fc" id="L41">            User newUser = new User();</span>
+<span class="fc" id="L42">            newUser.setId(UUID.randomUUID().toString());</span>
+<span class="fc" id="L43">            newUser.setDisplayName((String) payload.get(&quot;name&quot;));</span>
+<span class="fc" id="L44">            newUser.setProfileImageUrl((String) payload.get(&quot;picture&quot;));</span>
+<span class="fc" id="L45">            userRepository.save(newUser);</span>
+
+<span class="fc" id="L47">            UserIdentity newIdentity = new UserIdentity();</span>
+<span class="fc" id="L48">            newIdentity.setId(UUID.randomUUID().toString());</span>
+<span class="fc" id="L49">            newIdentity.setUser(newUser);</span>
+<span class="fc" id="L50">            newIdentity.setProviderName(&quot;google&quot;);</span>
+<span class="fc" id="L51">            newIdentity.setProviderUserId(providerUserId);</span>
+            // TODO: refreshTokenとaccessTokenを暗号化してセット
+            // newIdentity.setEncryptedAccessToken(encryptedAccessToken);
+            // newIdentity.setEncryptedRefreshToken(encryptedRefreshToken);
+            // newIdentity.setAccessTokenExpiresAt(expiresAt);
+<span class="fc" id="L56">            userIdentityRepository.save(newIdentity);</span>
+
+<span class="fc" id="L58">            return newUser;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
