@@ -19,12 +19,28 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/api/auth/google")
 @RequiredArgsConstructor
+/**
+ * Google OAuth2認証のコールバック処理を担当するコントローラー。
+ * <p>
+ * Google認証後のコールバックを受け取り、トークン交換・IDトークン検証・ユーザー登録・JWT発行までを行う。
+ * </p>
+ */
 public class AuthController {
     
     private final GoogleAuthService googleAuthService;
     private final UserService userService;
     private final JwtService jwtService;
 
+    /**
+     * Google OAuth2認証のコールバックを受けて、
+     * トークン交換・IDトークン検証・ユーザー登録・JWT発行までを行うエンドポイント。
+     * <p>
+     * セッションからstate/nonce/code_verifierを取得し、CSRF・リプレイ攻撃対策も行う。
+     * </p>
+     * @param callbackRequest Google認証から返却された情報（code, state等）
+     * @param request HTTPリクエスト（セッション取得用）
+     * @return JWT（sessionToken）を含むレスポンス or エラー
+     */
     @PostMapping("/callback")
     public ResponseEntity<?> handleCallback(@RequestBody CallbackRequestDto callbackRequest, HttpServletRequest request) {
         try {
@@ -34,7 +50,7 @@ public class AuthController {
             String savedNonce = (String) session.getAttribute("nonce");
             String codeVerifier = (String) session.getAttribute("code_verifier");
 
-            // stateを検証してCSRFを防ぐ [cite: 185]
+            // stateを検証してCSRFを防ぐ
             if (savedState == null || !savedState.equals(callbackRequest.getState())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid state");
             }
